@@ -3,6 +3,12 @@ provider "softlayer" {
 #    api_key = "${var.sl_api_key}"
 }
 
+
+# Generate a random id in case user wants us to generate admin password
+resource "random_id" "adminpassword" {
+  byte_length = "4"
+}
+
 data "softlayer_ssh_key" "public_key" {
   label = "${var.key_name}"
 }
@@ -74,7 +80,7 @@ resource "softlayer_virtual_guest" "icpproxy" {
 }
 
 module "icpprovision" {
-    source = "github.com/ibm-cloud-architecture/terraform-module-icp-deploy"
+    source = "github.com/ibm-cloud-architecture/terraform-module-icp-deploy?ref=1.0.0"
     
     icp-master = ["${softlayer_virtual_guest.icpmaster.ipv4_address}"]
     icp-worker = ["${softlayer_virtual_guest.icpworker.*.ipv4_address}"]
@@ -95,6 +101,7 @@ module "icpprovision" {
     icp_configuration = {
       "network_cidr"              = "192.168.0.0/16"
       "service_cluster_ip_range"  = "172.16.0.1/24"
+      "default_admin_password"    = "${var.icp_admin_password == "Generate" ? random_id.adminpassword.hex : var.icp_admin_password}"
     }
 
     # We will let terraform generate a new ssh keypair 
@@ -109,3 +116,6 @@ module "icpprovision" {
     
 } 
 
+output "icp_admin_password" {
+  value = "${var.icp_admin_password == "Generate" ? random_id.adminpassword.hex : var.icp_admin_password}"
+}
