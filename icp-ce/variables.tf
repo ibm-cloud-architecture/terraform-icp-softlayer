@@ -10,13 +10,13 @@ variable "key_name" {
 
 ##### Common VM specifications ######
 variable "datacenter" { default = "sao01" }
-variable "domain" { default = "icp2.patro" }
+variable "domain" { default = "brazil.patro" }
 
 ##### ICP version #####
 variable "icp_version" { default = "ibmcom/icp-inception:latest" }
 
 # Name of the ICP installation, will be used as basename for VMs
-variable "instance_name" { default = "sao" }
+variable "instance_name" { default = "us" }
 
 ##### ICP Instance details ######
 variable "master" {
@@ -24,10 +24,10 @@ variable "master" {
   
   default = {
     nodes       = "1"
-    cpu_cores   = "2"
+    cpu_cores   = "4"
     disk_size   = "100" // GB
     local_disk  = false
-    memory      = "8192"
+    memory      = "16384"
     network_speed= "1000"
     private_network_only=false
     hourly_billing=true
@@ -53,8 +53,8 @@ variable "worker" {
   type = "map"
   
   default = {
-    nodes       = "1"
-    cpu_cores   = "8"
+    nodes       = "3"
+    cpu_cores   = "4"
     disk_size   = "100" // GB
     local_disk  = true
     memory      = "16384"
