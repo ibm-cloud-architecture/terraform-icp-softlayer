@@ -9,18 +9,18 @@ variable "key_name" {
 
 
 ##### Common VM specifications ######
-variable "datacenter" { default = "sao01" }
-variable "domain" { default = "brazil.patro" }
+variable "datacenter" { default = "tok02" }
+variable "domain" { default = "japan.patro.org" }
 
 ##### ICP version #####
-variable "icp_version" { default = "ibmcom/icp-inception:latest" }
+variable "icp_version" { default = "ibmcom/icp-inception:2.1.0.2" }
 
 # Name of the ICP installation, will be used as basename for VMs
-variable "instance_name" { default = "us" }
+variable "instance_name" { default = "br" }
 
 variable "icp_admin_password" {
   description = "ICP Admin Users password password. 'Generate' generates a new random password"
-  default     = "Generate"
+  default     = "admin"
 }
 ##### ICP Instance details ######
 variable "master" {
@@ -57,7 +57,7 @@ variable "worker" {
   type = "map"
   
   default = {
-    nodes       = "3"
+    nodes       = "2"
     cpu_cores   = "4"
     disk_size   = "100" // GB
     local_disk  = true
